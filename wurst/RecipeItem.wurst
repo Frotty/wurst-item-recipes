@@ -1,0 +1,106 @@
+package RecipeItem
+import ItemObjEditing
+import ObjectIdGenerator
+import Assets
+import ClosureEvents
+import HashMap
+import ObjectIds
+import ClosureTimers
+
+constant tomeMap = new HashMap<int, RecipeItem>
+constant realMap = new HashMap<int, RecipeItem>
+
+public class RecipeItem extends ItemDefinition
+    let tomeId = ITEM_ID_GEN.next()
+
+    var color = COLOR_WHITE
+    var model = Objects.treasurechest1
+    var icon = ""
+    var name = ""
+    var goldCost = 0
+    var lumberCost = 0
+    var charges = 0
+    var maxStack = 0
+
+    construct()
+        super(ITEM_ID_GEN.next(), 'wolg')
+
+    function register()
+        tomeMap.put(tomeId, this)
+        realMap.put(getNewId(), this)
+
+    function build()
+        new ItemDefinition(tomeId, 'manh')
+        ..setAbilities("")
+        ..setName(name)
+        ..setInterfaceIcon(icon)
+        ..setModelUsed(model)
+
+    function create(vec2 pos) returns item
+        return createItem(tomeId, pos)
+
+    override function setName(string data)
+        super.setName(data)
+        name = data
+
+    override function setTintingColor3Blue(int data)
+        super.setTintingColor3Blue(data)
+        color.blue = data
+
+    override function setTintingColor2Green(int data)
+        super.setTintingColor2Green(data)
+        color.green = data
+
+    override function setTintingColor1Red(int data)
+        super.setTintingColor1Red(data)
+        color.red = data
+
+    override function setModelUsed(string data)
+        super.setModelUsed(data)
+        model = data
+
+    override function setGoldCost(int data)
+        super.setGoldCost(data)
+        goldCost = data
+
+    override function setLumberCost(int data)
+        super.setLumberCost(data)
+        lumberCost = data
+
+    override function setNumberofCharges(int data)
+        super.setNumberofCharges(data)
+        charges = data
+
+    override function setInterfaceIcon(string data)
+        super.setInterfaceIcon(data)
+        icon = data
+
+    override function setMaxStack(int data)
+        super.setMaxStack(data)
+        maxStack = data
+
+init
+    EventListener.add(EVENT_PLAYER_UNIT_PICKUP_ITEM) ->
+        let itm = EventData.getManipulatedItem()
+        let picker = EventData.getManipulatingUnit()
+        let id = itm.getTypeId()
+        print(itm.getName() + "; " + id.toRawCode())
+        if tomeMap.has(id)
+            let recipeItem = tomeMap.get(id)
+            itm.remove()
+            picker.addItemById(recipeItem.getNewId())
+
+    EventListener.add(EVENT_PLAYER_UNIT_DROP_ITEM) ->
+        
+        let itm = EventData.getManipulatedItem()
+        let id = itm.getTypeId()
+        print(EventData.getOrderTargetPos().toString() + "; " + itm.getName() + "; " + id.toRawCode())
+        if realMap.has(id)
+            let recipeItem = realMap.get(id)
+            nullTimer() ->
+                let pos = itm.getPos()
+                itm.remove()
+
+                recipeItem.create(pos)
+
+        

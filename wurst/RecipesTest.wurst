@@ -1,0 +1,38 @@
+package RecipesTest
+import ClosureTimers
+import RecipeItem
+import Icons
+import ItemRecipe
+
+constant ITEM1_DEF = compiletime(new RecipeItem()
+    ..setName("Test Item 1")
+    ..setGoldCost(100)
+    ..setInterfaceIcon(Icons.bTNRingGreen)
+    ..build())
+    ..register()
+
+constant ITEM2_DEF = compiletime(new RecipeItem()
+    ..setName("Test Item 2")
+    ..setGoldCost(100)
+    ..setInterfaceIcon(Icons.bTNRingGreen)
+    ..setTintingColor1Red(100)
+    ..build())
+    ..register()
+
+constant ITEM3_DEF = compiletime(new RecipeItem()
+    ..setName("Test Item 3")
+    ..setGoldCost(100)
+    ..setInterfaceIcon(Icons.bTNRingGreen)
+    ..setTintingColor1Red(100)
+    ..build())
+    ..register()
+
+constant RECIPE_DEF = compiletime(new ItemRecipe("Ring Recipe")
+    ..setRequiredItems(ITEM1_DEF.getNewId(), ITEM2_DEF.getNewId())
+    ..setResultItem(ITEM3_DEF.getNewId()))
+
+
+init
+    nullTimer() -> 
+        ITEM1_DEF.create(ZERO2)
+        ITEM2_DEF.create(ZERO2)

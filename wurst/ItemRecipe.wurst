@@ -1,0 +1,27 @@
+package ItemRecipe
+import LinkedList
+
+
+public class ItemRecipe
+    let itemList = new LinkedList<int>  
+    var targetItemId = 0
+    var name = ""
+
+    construct(string name)
+        this.name = name
+
+    function setRequiredItems(vararg int ids)
+        for id in ids
+            itemList.add(id)
+
+    function setResultItem(int id)
+        targetItemId = id
+
+    function checkUnit(unit u)
+        for itemId in itemList
+            if not u.hasItemById(itemId)
+                return
+
+    
+
+
