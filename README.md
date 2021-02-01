@@ -7,7 +7,7 @@ This library allows you to make simple item recipes. If all required items of a 
 Example Recipe:
 
 ```wurst
-constant RECIPE_DEF = new ItemRecipe("Example Recipe")
+constant RECIPE_DEF = new ItemRecipe()
     ..setRequiredItems(RECIPE_ITEM_1_ID, RECIPE_ITEM_2_ID)
     ..setResultItem(TARGET_ITEM_ID.getNewId())
 ```
@@ -78,7 +78,7 @@ constant ITEM3_DEF = compiletime(new RecipeItem()
     ..setTintingColor1Red(100))
     ..register()
 
-constant RECIPE_DEF = new ItemRecipe("Ring Recipe")
+constant RECIPE_DEF = new ItemRecipe()
     ..setRequiredItems(ITEM1_DEF.getNewId(), ITEM2_DEF.getNewId())
     ..setResultItem(ITEM3_DEF.getNewId())
 
