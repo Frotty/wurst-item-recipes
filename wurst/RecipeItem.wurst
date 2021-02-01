@@ -11,10 +11,9 @@ constant tomeMap = new HashMap<int, RecipeItem>
 constant realMap = new HashMap<int, RecipeItem>
 
 public class RecipeItem extends ItemDefinition
+    let tomeDef = new ItemDefinition(tomeId, 'manh')
     let tomeId = ITEM_ID_GEN.next()
 
-    var color = COLOR_WHITE
-    var model = Objects.treasurechest1
     var icon = ""
     var name = ""
     var goldCost = 0
@@ -22,19 +21,18 @@ public class RecipeItem extends ItemDefinition
     var charges = 0
     var maxStack = 0
 
+    construct(int newId, int origId)
+        super(newId, origId)
+
+    construct(int origId)
+        super(ITEM_ID_GEN.next(), origId)
+
     construct()
         super(ITEM_ID_GEN.next(), 'wolg')
 
     function register()
         tomeMap.put(tomeId, this)
         realMap.put(getNewId(), this)
-
-    function build()
-        new ItemDefinition(tomeId, 'manh')
-        ..setAbilities("")
-        ..setName(name)
-        ..setInterfaceIcon(icon)
-        ..setModelUsed(model)
 
     function create(vec2 pos) returns item
         return createItem(tomeId, pos)
@@ -45,34 +43,38 @@ public class RecipeItem extends ItemDefinition
 
     override function setTintingColor3Blue(int data)
         super.setTintingColor3Blue(data)
-        color.blue = data
+        tomeDef.setTintingColor3Blue(data)
 
     override function setTintingColor2Green(int data)
         super.setTintingColor2Green(data)
-        color.green = data
+        tomeDef.setTintingColor2Green(data)
 
     override function setTintingColor1Red(int data)
         super.setTintingColor1Red(data)
-        color.red = data
+        tomeDef.setTintingColor1Red(data)
 
     override function setModelUsed(string data)
         super.setModelUsed(data)
-        model = data
+        tomeDef.setModelUsed(data)
 
     override function setGoldCost(int data)
         super.setGoldCost(data)
+        tomeDef.setGoldCost(data)
         goldCost = data
 
     override function setLumberCost(int data)
         super.setLumberCost(data)
+        tomeDef.setLumberCost(data)
         lumberCost = data
 
     override function setNumberofCharges(int data)
         super.setNumberofCharges(data)
+        tomeDef.setNumberofCharges(data)
         charges = data
 
     override function setInterfaceIcon(string data)
         super.setInterfaceIcon(data)
+        tomeDef.setInterfaceIcon(data)
         icon = data
 
     override function setMaxStack(int data)
