@@ -1,7 +1,6 @@
 package ItemRecipe
 import LinkedList
 import HashMap
-import ObjectIds
 
 public constant recipeMap = new HashMap<int, LinkedList<ItemRecipe>>
 
@@ -27,7 +26,6 @@ public class ItemRecipe
     function checkUnit(unit u) returns boolean
         for itemId in itemList
             if not u.hasItemById(itemId)
-                print("does not have " + itemId.toRawCode())
                 return false
         
         for itemId in itemList
