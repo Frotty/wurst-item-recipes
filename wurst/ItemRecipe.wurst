@@ -1,10 +1,13 @@
 package ItemRecipe
 import LinkedList
+import HashMap
+import ObjectIds
 
+public constant recipeMap = new HashMap<int, LinkedList<ItemRecipe>>
 
 public class ItemRecipe
     let itemList = new LinkedList<int>  
-    var targetItemId = 0
+    var resultItemId = 0
     var name = ""
 
     construct(string name)
@@ -14,13 +17,26 @@ public class ItemRecipe
         for id in ids
             itemList.add(id)
 
+            if not recipeMap.has(id)
+                recipeMap.put(id, new LinkedList<ItemRecipe>)
+            recipeMap.get(id).add(this)
+            
     function setResultItem(int id)
-        targetItemId = id
+        resultItemId = id
 
-    function checkUnit(unit u)
+    function checkUnit(unit u) returns boolean
         for itemId in itemList
             if not u.hasItemById(itemId)
-                return
+                print("does not have " + itemId.toRawCode())
+                return false
+        
+        for itemId in itemList
+            u.getItemById(itemId)
+            ..setUserData(-1)
+            ..remove()
+
+        u.addItemById(resultItemId)
+        return true
 
     
 
