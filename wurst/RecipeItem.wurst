@@ -1,11 +1,11 @@
 package RecipeItem
 import ItemObjEditing
 import ObjectIdGenerator
-import Assets
 import ClosureEvents
 import HashMap
 import ClosureTimers
 import ItemRecipe
+import Objects
 
 constant tomeMap = new HashMap<int, RecipeItem>
 constant realMap = new HashMap<int, RecipeItem>
@@ -13,6 +13,8 @@ constant realMap = new HashMap<int, RecipeItem>
 public class RecipeItem extends ItemDefinition
     let tomeId = ITEM_ID_GEN.next()
     let tomeDef = new ItemDefinition(tomeId, 'manh')
+        ..setAbilities("")
+        ..setModelUsed(Objects.treasurechest1)
 
     var icon = ""
     var name = ""
@@ -39,6 +41,7 @@ public class RecipeItem extends ItemDefinition
 
     override function setName(string data)
         super.setName(data)
+        tomeDef.setName(data)
         name = data
 
     override function setTintingColor3Blue(int data)
