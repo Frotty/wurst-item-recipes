@@ -11,8 +11,8 @@ constant tomeMap = new HashMap<int, RecipeItem>
 constant realMap = new HashMap<int, RecipeItem>
 
 public class RecipeItem extends ItemDefinition
-    let tomeDef = new ItemDefinition(tomeId, 'manh')
     let tomeId = ITEM_ID_GEN.next()
+    let tomeDef = new ItemDefinition(tomeId, 'manh')
 
     var icon = ""
     var name = ""
