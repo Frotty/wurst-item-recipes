@@ -19,9 +19,9 @@ constant ITEM2_DEF = compiletime(new RecipeItem()
 
 constant ITEM3_DEF = compiletime(new RecipeItem()
     ..setName("Test Item 3")
-    ..setGoldCost(100)
+    ..setGoldCost(200)
     ..setInterfaceIcon(Icons.bTNRingGreen)
-    ..setTintingColor1Red(100))
+    ..setTintingColor2Green(100))
     ..register()
 
 constant RECIPE_DEF = new ItemRecipe()

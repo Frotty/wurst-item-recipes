@@ -8,8 +8,6 @@ public class ItemRecipe
     let itemList = new LinkedList<int>  
     var resultItemId = 0
 
-    construct()
-
     function setRequiredItems(vararg int ids)
         for id in ids
             itemList.add(id)

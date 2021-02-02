@@ -22,6 +22,8 @@ public class RecipeItem extends ItemDefinition
     var lumberCost = 0
     var charges = 0
     var maxStack = 0
+    var tooltipBasic = ""
+    var tooltipExtended = ""
 
     construct(int newId, int origId)
         super(newId, origId)
@@ -79,6 +81,17 @@ public class RecipeItem extends ItemDefinition
         super.setInterfaceIcon(data)
         tomeDef.setInterfaceIcon(data)
         icon = data
+
+    override function setTooltipBasic(string data)
+        super.setTooltipBasic(data)
+        tomeDef.setTooltipBasic(data)
+        tooltipBasic = data
+
+
+    override function setTooltipExtended(string data)
+        super.setTooltipExtended(data)
+        tomeDef.setTooltipExtended(data)
+        tooltipExtended = data
 
     override function setMaxStack(int data)
         super.setMaxStack(data)
