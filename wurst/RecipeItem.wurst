@@ -6,9 +6,25 @@ import HashMap
 import ClosureTimers
 import ItemRecipe
 import Objects
+import BonusHandler
+import LinkedList
 
 constant tomeMap = new HashMap<int, RecipeItem>
 constant realMap = new HashMap<int, RecipeItem>
+
+public class ItemBonus
+    Bonus bonus
+    real amount
+
+    construct(Bonus bonus, real amount)
+        this.bonus = bonus
+        this.amount = amount
+
+    function apply(unit u)
+        u.addBonus(bonus, amount)
+
+    function remove(unit u)
+        u.addBonus(bonus, -amount)
 
 public class RecipeItem extends ItemDefinition
     let tomeId = ITEM_ID_GEN.next()
@@ -16,6 +32,7 @@ public class RecipeItem extends ItemDefinition
         ..setAbilities("")
         ..setModelUsed(Objects.treasurechest1)
 
+    let bonusList = new LinkedList<ItemBonus>
     var icon = ""
     var name = ""
     var goldCost = 0
@@ -25,6 +42,7 @@ public class RecipeItem extends ItemDefinition
     var tooltipBasic = ""
     var tooltipExtended = ""
 
+
     construct(int newId, int origId)
         super(newId, origId)
 
@@ -32,14 +50,28 @@ public class RecipeItem extends ItemDefinition
         super(ITEM_ID_GEN.next(), origId)
 
     construct()
-        super(ITEM_ID_GEN.next(), 'wolg')
+        super(ITEM_ID_GEN.next(), 'rde1')
+        setAbilities("")
 
     function register()
         tomeMap.put(tomeId, this)
         realMap.put(getNewId(), this)
 
+    /** Creates the item at the given position */
     function create(vec2 pos) returns item
         return createItem(tomeId, pos)
+
+    /** Adds a bonus to this item which will be applied to the wearer */
+    function addBonus(Bonus bonus, real amount)
+        bonusList.add(new ItemBonus(bonus, amount))
+        
+    function applyBonuses(unit u)
+        for bonus in bonusList
+            bonus.apply(u)
+
+    function removeBonuses(unit u)
+        for bonus in bonusList
+            bonus.remove(u)
 
     override function setName(string data)
         super.setName(data)
@@ -97,6 +129,7 @@ public class RecipeItem extends ItemDefinition
         super.setMaxStack(data)
         maxStack = data
 
+
 init
     EventListener.add(EVENT_PLAYER_UNIT_PICKUP_ITEM) ->
         let itm = EventData.getManipulatedItem()
@@ -113,16 +146,22 @@ init
             let recipeItem = tomeMap.get(id)
             itm.remove()
             picker.addItemById(recipeItem.getNewId())
+            recipeItem.applyBonuses(picker)
 
     EventListener.add(EVENT_PLAYER_UNIT_DROP_ITEM) ->
         let itm = EventData.getManipulatedItem()
+        let dropper = EventData.getManipulatingUnit()
         let id = itm.getTypeId()
-        if itm.getUserData() != -1 and realMap.has(id)
+        if realMap.has(id)
             let recipeItem = realMap.get(id)
-            nullTimer() ->
-                let pos = itm.getPos()
-                itm.remove()
-
-                recipeItem.create(pos)
+            recipeItem.removeBonuses(dropper)
+            if itm.getUserData() != -1
+                nullTimer() ->
+                    let pos = itm.getPos()
+                    itm.remove()
+                    recipeItem.create(pos)
 
         
+    EventListener.add(EVENT_PLAYER_UNIT_PAWN_ITEM) ->
+        let itm = EventData.getSoldItem()
+        itm.setUserData(-1)

@@ -3,25 +3,30 @@ import ClosureTimers
 import RecipeItem
 import Icons
 import ItemRecipe
+import BonusHandler
 
 constant ITEM1_DEF = compiletime(new RecipeItem()
     ..setName("Test Item 1")
     ..setGoldCost(100)
-    ..setInterfaceIcon(Icons.bTNRingGreen))
+    ..setInterfaceIcon(Icons.bTNRingGreen)
+    ..addBonus(Bonus.DAMAGE, 10))
     ..register()
 
 constant ITEM2_DEF = compiletime(new RecipeItem()
     ..setName("Test Item 2")
     ..setGoldCost(100)
     ..setInterfaceIcon(Icons.bTNRingGreen)
-    ..setTintingColor1Red(100))
+    ..setTintingColor1Red(100)
+    ..addBonus(Bonus.ARMOR, 10))
     ..register()
 
 constant ITEM3_DEF = compiletime(new RecipeItem()
     ..setName("Test Item 3")
     ..setGoldCost(200)
     ..setInterfaceIcon(Icons.bTNRingGreen)
-    ..setTintingColor2Green(100))
+    ..setTintingColor2Green(100)
+    ..addBonus(Bonus.DAMAGE, 10)
+    ..addBonus(Bonus.ARMOR, 10))
     ..register()
 
 constant RECIPE_DEF = new ItemRecipe()
