@@ -1,6 +1,8 @@
 package ItemRecipe
 import LinkedList
 import HashMap
+import AttachmentPoints
+import Abilities
 
 public constant recipeMap = new HashMap<int, LinkedList<ItemRecipe>>
 
@@ -30,6 +32,7 @@ public class ItemRecipe
             ..remove()
 
         u.addItemById(resultItemId)
+        u.addEffect(Abilities.tomeOfRetrainingCaster, AttachmentPoints.origin)..destr()
         return true
 
     

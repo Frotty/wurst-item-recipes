@@ -25,6 +25,19 @@ public class ItemBonus
 
     function remove(unit u)
         u.addBonus(bonus, -amount)
+    
+    function toString() returns string
+        var result = ""
+        if amount > 0
+            result += COLOR_GOLD.toColorString() + "+"
+
+        if bonus == Bonus.MANAREGEN
+            result += amount.toString() + "|r"
+        else
+            result += amount.round().toString() + "|r"
+        result += " " + bonus.toString()
+        return result
+        
 
 public class RecipeItem extends ItemDefinition
     let tomeId = ITEM_ID_GEN.next()
@@ -64,6 +77,15 @@ public class RecipeItem extends ItemDefinition
     /** Adds a bonus to this item which will be applied to the wearer */
     function addBonus(Bonus bonus, real amount)
         bonusList.add(new ItemBonus(bonus, amount))
+
+    function generateTooltip(string description)
+        setTooltipBasic("Purchase " + name)
+        var extended = ""
+        for bonus in bonusList
+            extended += bonus.toString() + "\n"
+        
+        extended += "\n" + description
+        setTooltipExtended(extended)
         
     function applyBonuses(unit u)
         for bonus in bonusList
