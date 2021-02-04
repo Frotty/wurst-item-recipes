@@ -8,9 +8,11 @@ import ItemRecipe
 import Objects
 import BonusHandler
 import LinkedList
+import GameTimer
 
 constant tomeMap = new HashMap<int, RecipeItem>
 constant realMap = new HashMap<int, RecipeItem>
+constant timestamps = new HashMap<item, real>
 
 public class ItemBonus
     Bonus bonus
@@ -153,15 +155,20 @@ public class RecipeItem extends ItemDefinition
 
 
 init
+    EventListener.add(EVENT_PLAYER_UNIT_USE_ITEM) ->
+        let itm = EventData.getManipulatedItem()
+        timestamps.put(itm, getElapsedGameTime())
+
     EventListener.add(EVENT_PLAYER_UNIT_PICKUP_ITEM) ->
         let itm = EventData.getManipulatedItem()
         let picker = EventData.getManipulatingUnit()
         let id = itm.getTypeId()
+        let charges = itm.getCharges()
 
         if tomeMap.has(id)
             let recipeItem = tomeMap.get(id)
             itm.remove()
-            picker.addItemById(recipeItem.getNewId())
+            picker.addItemById(recipeItem.getNewId())..setCharges(charges)
         else if realMap.has(id)
             let recipeItem = realMap.get(id)
             recipeItem.applyBonuses(picker)
@@ -179,11 +186,14 @@ init
         if realMap.has(id)
             let recipeItem = realMap.get(id)
             recipeItem.removeBonuses(dropper)
-            if itm.getUserData() != -1
+            if (timestamps.has(itm) and timestamps.get(itm) + 0.01 < getElapsedGameTime()) and itm.getUserData() != -1
+                let charges = itm.getCharges()
                 nullTimer() ->
                     let pos = itm.getPos()
                     itm.remove()
                     recipeItem.create(pos)
+                    ..setCharges(charges)
+
 
         
     EventListener.add(EVENT_PLAYER_UNIT_PAWN_ITEM) ->

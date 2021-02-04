@@ -5,7 +5,7 @@ import Icons
 import ItemRecipe
 import BonusHandler
 
-constant ITEM1_DEF = compiletime(new RecipeItem()
+constant ITEM1_DEF = compiletime(new RecipeItem('desc')
     ..setName("Test Item 1")
     ..setGoldCost(100)
     ..setInterfaceIcon(Icons.bTNRingGreen)
@@ -13,13 +13,14 @@ constant ITEM1_DEF = compiletime(new RecipeItem()
     ..generateTooltip("Cool Ring 1"))
     ..register()
 
-constant ITEM2_DEF = compiletime(new RecipeItem()
-    ..setName("Test Item 2")
+constant ITEM2_DEF = compiletime(new RecipeItem('phea')
+    ..setName("Test Potion")
     ..setGoldCost(100)
-    ..setInterfaceIcon(Icons.bTNRingGreen)
+    ..setInterfaceIcon(Icons.bTNHealthStone)
     ..setTintingColor1Red(100)
     ..addBonus(Bonus.ARMOR, 10)
-    ..generateTooltip("Cool Ring 2"))
+    ..setNumberofCharges(1)
+    ..generateTooltip("Cool Potion 2"))
     ..register()
 
 constant ITEM3_DEF = compiletime(new RecipeItem()
