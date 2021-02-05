@@ -3,6 +3,7 @@ import LinkedList
 import HashMap
 import AttachmentPoints
 import Abilities
+import ObjectIds
 
 public constant recipeMap = new HashMap<int, LinkedList<ItemRecipe>>
 
@@ -21,11 +22,17 @@ public class ItemRecipe
     function setResultItem(int id)
         resultItemId = id
 
-    function checkUnit(unit u) returns boolean
-        for itemId in itemList
-            if not u.hasItemById(itemId)
-                return false
-        
+    function checkUnit(unit u, int fullId) returns boolean
+        let requirements = itemList.copy()
+        for i = 0 to 5
+            requirements.remove(u.itemInSlot(i).getTypeId())
+
+        requirements.remove(fullId)
+            
+        if not requirements.isEmpty()
+            destroy requirements
+            return false
+
         for itemId in itemList
             u.getItemById(itemId)
             ..setUserData(-1)
@@ -33,6 +40,7 @@ public class ItemRecipe
 
         u.addItemById(resultItemId)
         u.addEffect(Abilities.tomeOfRetrainingCaster, AttachmentPoints.origin)..destr()
+        destroy requirements
         return true
 
     

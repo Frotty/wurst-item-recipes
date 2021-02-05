@@ -9,6 +9,7 @@ import Objects
 import BonusHandler
 import LinkedList
 import GameTimer
+import ObjectIds
 
 constant tomeMap = new HashMap<int, RecipeItem>
 constant realMap = new HashMap<int, RecipeItem>
@@ -56,7 +57,8 @@ public class RecipeItem extends ItemDefinition
     var maxStack = 0
     var tooltipBasic = ""
     var tooltipExtended = ""
-
+    var stackable = false
+    var stackBonuses = false
 
     construct(int newId, int origId)
         super(newId, origId)
@@ -71,6 +73,10 @@ public class RecipeItem extends ItemDefinition
     function register()
         tomeMap.put(tomeId, this)
         realMap.put(getNewId(), this)
+
+    function setStackable(boolean stackBonuses)
+        stackable = true
+        this.stackBonuses = stackBonuses
 
     /** Creates the item at the given position */
     function create(vec2 pos) returns item
@@ -164,20 +170,60 @@ init
         let picker = EventData.getManipulatingUnit()
         let id = itm.getTypeId()
         let charges = itm.getCharges()
+        let itmPos = itm.getPos()
+        let tomeItem = tomeMap.get(id)
+        var inventoryFull = picker.isInventoryFull()
+        var dontAdd = false
+        // print("full: " + inventoryFull.toString())
 
-        if tomeMap.has(id)
-            let recipeItem = tomeMap.get(id)
-            itm.remove()
-            picker.addItemById(recipeItem.getNewId())..setCharges(charges)
+        if tomeItem != null
+            // print("tome and not full")
+            let newId = tomeItem.getNewId()
+            let existingItem = picker.getItemById(newId)
+            let newItem = createItem(newId, picker.getPos())
+            if newItem.getCharges() > 0
+                if existingItem != null
+                    existingItem.setCharges(existingItem.getCharges() + charges)
+                    newItem.setUserData(-1)
+                    newItem.remove()
+                    dontAdd = true
+                else
+                    newItem.setCharges(charges)
+                    picker.addItemHandle(newItem)
+            else
+                picker.addItemHandle(newItem)
+
+            if inventoryFull
+                newItem.setUserData(-1)
+                newItem.remove()
+            
         else if realMap.has(id)
+            // print("is real")
             let recipeItem = realMap.get(id)
             recipeItem.applyBonuses(picker)
 
-        if recipeMap.has(id)
-            let recipes = recipeMap.get(id)
+        var recipeId = id
+        if (tomeItem != null and recipeMap.has(tomeItem.getNewId()))
+            recipeId = tomeItem.getNewId()
+
+        // print("is part of recipe")
+        let recipes = recipeMap.get(recipeId)
+        if recipes != null
+            var extraId = -1
+            if inventoryFull and tomeItem != null
+                let recipeItem = tomeMap.get(id)
+                extraId = recipeItem.getNewId()
+                // print("extraId: " + extraId.toRawCode())
             for recipe in recipes
-                if recipe.checkUnit(picker)
+                if recipe.checkUnit(picker, extraId)
+                    inventoryFull = false
                     break
+
+        if inventoryFull and tomeItem != null
+            itm.setUserData(-1)
+            itm.remove()
+            if not dontAdd
+                createItem(id, itmPos)
 
     EventListener.add(EVENT_PLAYER_UNIT_DROP_ITEM) ->
         let itm = EventData.getManipulatedItem()
@@ -186,7 +232,7 @@ init
         if realMap.has(id)
             let recipeItem = realMap.get(id)
             recipeItem.removeBonuses(dropper)
-            if (timestamps.has(itm) and timestamps.get(itm) + 0.01 < getElapsedGameTime()) and itm.getUserData() != -1
+            if itm.getUserData() != -1 or (timestamps.has(itm) and timestamps.get(itm) + 0.01 < getElapsedGameTime()) 
                 let charges = itm.getCharges()
                 nullTimer() ->
                     let pos = itm.getPos()

@@ -40,5 +40,6 @@ constant RECIPE_DEF = new ItemRecipe()
 
 init
     nullTimer() -> 
-        ITEM1_DEF.create(ZERO2)
-        ITEM2_DEF.create(ZERO2)
+        for i = 0 to 10
+            ITEM1_DEF.create(ZERO2)
+            ITEM2_DEF.create(ZERO2)
