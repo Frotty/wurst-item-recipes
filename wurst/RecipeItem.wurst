@@ -57,8 +57,6 @@ public class RecipeItem extends ItemDefinition
     var maxStack = 0
     var tooltipBasic = ""
     var tooltipExtended = ""
-    var stackable = false
-    var stackBonuses = false
 
     construct(int newId, int origId)
         super(newId, origId)
@@ -74,9 +72,6 @@ public class RecipeItem extends ItemDefinition
         tomeMap.put(tomeId, this)
         realMap.put(getNewId(), this)
 
-    function setStackable(boolean stackBonuses)
-        stackable = true
-        this.stackBonuses = stackBonuses
 
     /** Creates the item at the given position */
     function create(vec2 pos) returns item
@@ -232,7 +227,7 @@ init
         if realMap.has(id)
             let recipeItem = realMap.get(id)
             recipeItem.removeBonuses(dropper)
-            if itm.getUserData() != -1 or (timestamps.has(itm) and timestamps.get(itm) + 0.01 < getElapsedGameTime()) 
+            if itm.getUserData() != -1 and timestamps.has(itm) and timestamps.get(itm) + 0.01 < getElapsedGameTime()
                 let charges = itm.getCharges()
                 nullTimer() ->
                     let pos = itm.getPos()
