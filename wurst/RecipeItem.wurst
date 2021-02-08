@@ -223,7 +223,7 @@ init
         let itm = EventData.getManipulatedItem()
         let dropper = EventData.getManipulatingUnit()
         let id = itm.getTypeId()
-        if realMap.has(id)
+        if not dropper.isIllusion() and realMap.has(id)
             let recipeItem = realMap.get(id)
             recipeItem.removeBonuses(dropper)
             if itm.getUserData() != -1 and (not timestamps.has(itm) or timestamps.get(itm) + 0.01 < getElapsedGameTime())
