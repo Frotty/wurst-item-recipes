@@ -3,7 +3,6 @@ import LinkedList
 import HashMap
 import AttachmentPoints
 import Abilities
-import ObjectIds
 
 public constant recipeMap = new HashMap<int, LinkedList<ItemRecipe>>
 

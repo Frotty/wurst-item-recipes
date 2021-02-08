@@ -9,7 +9,6 @@ import Objects
 import BonusHandler
 import LinkedList
 import GameTimer
-import ObjectIds
 
 constant tomeMap = new HashMap<int, RecipeItem>
 constant realMap = new HashMap<int, RecipeItem>
@@ -227,7 +226,7 @@ init
         if realMap.has(id)
             let recipeItem = realMap.get(id)
             recipeItem.removeBonuses(dropper)
-            if itm.getUserData() != -1 and timestamps.has(itm) and timestamps.get(itm) + 0.01 < getElapsedGameTime()
+            if itm.getUserData() != -1 and (not timestamps.has(itm) or timestamps.get(itm) + 0.01 < getElapsedGameTime())
                 let charges = itm.getCharges()
                 nullTimer() ->
                     let pos = itm.getPos()
