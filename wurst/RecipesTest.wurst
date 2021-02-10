@@ -2,8 +2,6 @@ package RecipesTest
 import ClosureTimers
 import RecipeItem
 import Icons
-import ItemRecipe
-import BonusHandler
 
 constant ITEM1_DEF = compiletime(new RecipeItem('desc')
     ..setName("Test Item 1")
