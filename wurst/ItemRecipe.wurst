@@ -49,12 +49,12 @@ public class ItemRecipe
         lumberCost = lumber
 
     function setRequiredItems(vararg int ids)
-        tooltip = COLOR_GOLD.toColorString() + "Required|r Items:\n"
+        tooltip = COLOR_GOLD.toColorString() + "Required Items|r:\n"
         for id in ids
             itemList.add(id)
 
             let dummy = createItem(id, ZERO2)
-            tooltip += "-" + dummy.getName() + "\n"
+            tooltip += "  - " + dummy.getName() + "\n"
             dummy.remove()
 
             if not recipeMap.has(id)
