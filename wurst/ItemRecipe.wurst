@@ -22,7 +22,7 @@ public class ItemRecipe
         lumberCost = lumber
     
     function setRequiredItems(vararg int ids)
-        var tooltip = "Required Items:\n"
+        tooltip = "Required Items:\n"
         for id in ids
             itemList.add(id)
 
