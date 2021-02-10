@@ -9,10 +9,26 @@ public constant recipeMap = new HashMap<int, LinkedList<ItemRecipe>>
 public class ItemRecipe
     let itemList = new LinkedList<int>  
     var resultItemId = 0
+    var name = ""
+    var tooltip = ""
 
+    var goldCost = 0
+    var lumberCost = 0
+  
+    function gold(int gold)
+        goldCost = gold
+
+    function lumber(int lumber)
+        lumberCost = lumber
+    
     function setRequiredItems(vararg int ids)
+        var tooltip = "Required Items:\n"
         for id in ids
             itemList.add(id)
+
+            let dummy = createItem(id, ZERO2)
+            tooltip += "-" + dummy.getName() + "\n"
+            dummy.remove()
 
             if not recipeMap.has(id)
                 recipeMap.put(id, new LinkedList<ItemRecipe>)
@@ -20,6 +36,12 @@ public class ItemRecipe
             
     function setResultItem(int id)
         resultItemId = id
+
+        let dummy = createItem(id, ZERO2)
+        tooltip = "Purchase " + dummy.getName() + "\n" + tooltip
+        dummy.remove()
+
+
 
     function checkUnit(unit u, int fullId) returns boolean
         let requirements = itemList.copy()

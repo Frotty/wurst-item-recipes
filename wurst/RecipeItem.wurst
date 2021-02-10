@@ -4,11 +4,11 @@ import ObjectIdGenerator
 import ClosureEvents
 import HashMap
 import ClosureTimers
-import ItemRecipe
 import Objects
-import BonusHandler
 import LinkedList
 import GameTimer
+import public ItemRecipe
+import public BonusHandler
 
 constant tomeMap = new HashMap<int, RecipeItem>
 constant realMap = new HashMap<int, RecipeItem>
