@@ -38,9 +38,8 @@ public class ItemRecipe
         resultItemId = id
 
         let dummy = createItem(id, ZERO2)
-        tooltip = "Purchase " + dummy.getName() + "\n" + tooltip
+        name = "Purchase " + dummy.getName()
         dummy.remove()
-
 
 
     function checkUnit(unit u, int fullId) returns boolean
