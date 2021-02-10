@@ -5,6 +5,32 @@ import AttachmentPoints
 import Abilities
 import BonusHandler
 
+public class ItemBonus
+    Bonus bonus
+    real amount
+
+    construct(Bonus bonus, real amount)
+        this.bonus = bonus
+        this.amount = amount
+
+    function apply(unit u)
+        u.addBonus(bonus, amount)
+
+    function remove(unit u)
+        u.addBonus(bonus, -amount)
+
+    function toString() returns string
+        var result = ""
+        if amount > 0
+            result += COLOR_GOLD.toColorString() + "+"
+
+        if bonus == Bonus.MANAREGEN
+            result += amount.toString() + "|r"
+        else
+            result += amount.round().toString() + "|r"
+        result += " " + bonus.toString()
+        return result
+
 public constant recipeMap = new HashMap<int, LinkedList<ItemRecipe>>
 
 public class ItemRecipe
@@ -39,7 +65,7 @@ public class ItemRecipe
     function setResultItem(int id)
         setResultItem(id, null)
 
-    function setResultItem(int id, LinkedList<Bonus> bonuses)
+    function setResultItem(int id, LinkedList<ItemBonus> bonuses)
         resultItemId = id
 
         let dummy = createItem(id, ZERO2)
