@@ -209,7 +209,7 @@ init
                 extraId = recipeItem.getNewId()
                 // print("extraId: " + extraId.toRawCode())
             for recipe in recipes
-                if recipe.checkUnit(picker, extraId)
+                if recipe.goldCost == 0 and recipe.checkUnit(picker, extraId)
                     inventoryFull = false
                     break
 
