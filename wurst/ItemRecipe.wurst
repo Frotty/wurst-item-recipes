@@ -3,26 +3,27 @@ import LinkedList
 import HashMap
 import AttachmentPoints
 import Abilities
+import BonusHandler
 
 public constant recipeMap = new HashMap<int, LinkedList<ItemRecipe>>
 
 public class ItemRecipe
-    let itemList = new LinkedList<int>  
+    let itemList = new LinkedList<int>
     var resultItemId = 0
     var name = ""
     var tooltip = ""
 
     var goldCost = 0
     var lumberCost = 0
-  
+
     function gold(int gold)
         goldCost = gold
 
     function lumber(int lumber)
         lumberCost = lumber
-    
+
     function setRequiredItems(vararg int ids)
-        tooltip = "Required Items:\n"
+        tooltip = COLOR_GOLD.toColorString() + "Required|r Items:\n"
         for id in ids
             itemList.add(id)
 
@@ -33,13 +34,20 @@ public class ItemRecipe
             if not recipeMap.has(id)
                 recipeMap.put(id, new LinkedList<ItemRecipe>)
             recipeMap.get(id).add(this)
-            
+
+
     function setResultItem(int id)
+        setResultItem(id, null)
+
+    function setResultItem(int id, LinkedList<Bonus> bonuses)
         resultItemId = id
 
         let dummy = createItem(id, ZERO2)
         name = "Purchase " + dummy.getName()
         dummy.remove()
+
+        for bonus in bonuses
+            tooltip += "\n" + bonus.toString()
 
 
     function checkUnit(unit u, int fullId) returns boolean
@@ -48,7 +56,7 @@ public class ItemRecipe
             requirements.remove(u.itemInSlot(i).getTypeId())
 
         requirements.remove(fullId)
-            
+
         if not requirements.isEmpty()
             destroy requirements
             return false
@@ -63,6 +71,6 @@ public class ItemRecipe
         destroy requirements
         return true
 
-    
+
 
 
