@@ -18,7 +18,7 @@ public class ItemBonus
 
     function remove(unit u)
         u.addBonus(bonus, -amount)
-
+    
     function toString() returns string
         var result = ""
         if amount > 0
@@ -30,7 +30,7 @@ public class ItemBonus
             result += amount.round().toString() + "|r"
         result += " " + bonus.toString()
         return result
-
+        
 public constant recipeMap = new HashMap<int, LinkedList<ItemRecipe>>
 
 public class ItemRecipe

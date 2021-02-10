@@ -35,7 +35,7 @@ constant ITEM3_DEF = compiletime(new RecipeItem()
 
 constant RECIPE_DEF = new ItemRecipe()
     ..setRequiredItems(ITEM1_DEF.getNewId(), ITEM2_DEF.getNewId())
-    ..setResultItem(ITEM3_DEF.getNewId(), ITEM3_DEF.bonusList.map(b -> b.bonus))
+    ..setResultItem(ITEM3_DEF.getNewId(), ITEM3_DEF.bonusList)
 
 
 init
