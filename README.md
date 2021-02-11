@@ -5,22 +5,30 @@ Requires wurst-bonus-handler for adding bonuses to items.
 `grill install https://github.com/Frotty/wurst-bonus-handler`
 `grill install https://github.com/Frotty/wurst-item-recipes:main`
  
-This library allows you to make simple item recipes. If all required items of a recipe are picked up, they will be replaced by the result item.
+This library allows you to item recipes, meaning that if a list of **required items** is aquired, they will be replaced by a **result item**.
 
 Example Recipe:
 
 ```wurst
 constant RECIPE_DEF = new ItemRecipe()
     ..setRequiredItems(RECIPE_ITEM_1_ID, RECIPE_ITEM_2_ID)
-    ..setResultItem(TARGET_ITEM_ID.getNewId())
+    ..setResultItem(TARGET_ITEM_ID)
 ```
 
-## The `RecipeItem` wrapper
+# Additional Features
 
-Additionally you may replace your `ItemDefinition`s with `RecipeItem`, which creates a tome dummy allowing for pick up with full inventory.
+For additional features you may replace your usages of `ItemDefinition` with `RecipeItem` as a drop in replacement.
+Recipe items have the following benefits:
+- Storing most important information about the item
+- Stacking for items with stacks
+- Picking up items with full inventory
+- Applying bonuses easily
+- Generating tooltips 
+
+
+Using `RecipeItem will create a tome dummy allowing for pick up with full inventory.
 This means units will never receive a "full inventory" warning and always atempt a pick up.
-This way they are able to pick up items (e.g. recipes) while having a full inventory.
-You don't have to replace your `ItemDefinition`s if you don't want this behavior, recipes will still work normally.
+This way they are able to pick up items (e.g. recipes or stackable potions) while having a full inventory.
 
 To replace your ItemDefinitions, replace your object allocations from `ItemDefinition` to `RecipeItem`. You may remove any static or generated object id you've used before (example below). Then, if not already the case, move the RecipeItem allocation into a compiletime expression. This evaluates the result at compiletime, giving us access to the item's properties at runtime. Call `.register()` on that result, to make the item known at runtime.
 
@@ -44,13 +52,20 @@ constant MY_ITEM_DEF = compiletime(new RecipeItem(MY_ITEM_ID, 'wolg')
 ```
 
 Since the id handling is now done internally, you may remove input ids.
+This will default to an item without effect. To use another item as base provide its id as only paremter.
 
 ```wurst
-// AFTER (SHORT VERSION)
+// AFTER, WITH NO ID GIVEN
 constant MY_ITEM_DEF = compiletime(new RecipeItem()
     ..setName("My Item"))
     ..register()
+
+// AFTER, WITH BASE ID GIVEN
+constant MY_ITEM_DEF = compiletime(new RecipeItem(ItemIds.potionofHealing)
+    ..setName("My Item"))
+    ..register()
 ```
+
 
 ## Full Example
 
