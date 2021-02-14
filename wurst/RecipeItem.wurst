@@ -16,7 +16,7 @@ constant timestamps = new HashMap<item, real>
 
 public function ItemRecipe.setResultItem(RecipeItem recipeItem)
     this.resultItemId = recipeItem.getNewId()
-    this.tooltip += recipeItem.tooltipExtended
+    this.tooltip += "\n" + recipeItem.tooltipExtended
 
 public class RecipeItem extends ItemDefinition
     let tomeId = ITEM_ID_GEN.next()
