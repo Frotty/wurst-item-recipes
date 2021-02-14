@@ -21,9 +21,10 @@ public class ItemBonus
     
     function toString() returns string
         var result = ""
-        if amount > 0
+        if amount >= 0
             result += COLOR_GOLD.toColorString() + "+"
-
+        else
+            result += color(205,55,55).toColorString()
         if bonus == Bonus.MANAREGEN
             result += amount.toString() + "|r"
         else
