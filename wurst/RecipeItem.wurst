@@ -10,8 +10,8 @@ import GameTimer
 import public ItemRecipe
 import public BonusHandler
 
-constant tomeMap = new HashMap<int, RecipeItem>
-constant realMap = new HashMap<int, RecipeItem>
+public constant tomeMap = new HashMap<int, RecipeItem>
+public constant realMap = new HashMap<int, RecipeItem>
 constant timestamps = new HashMap<item, real>
 
 public function ItemRecipe.setResultItem(RecipeItem recipeItem)
