@@ -1,6 +1,7 @@
 package RecipesTest
 import ClosureTimers
 import RecipeItem
+import Assets
 import Icons
 
 constant ITEM1_DEF = compiletime(new RecipeItem('desc')
@@ -37,6 +38,7 @@ constant RECIPE_DEF = new ItemRecipe()
 
 
 init
+    createUnit(players[0], UnitIds.bloodmage, ZERO2, 0 .fromDeg())
     nullTimer() -> 
         for i = 0 to 10
             ITEM1_DEF.create(ZERO2)

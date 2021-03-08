@@ -154,7 +154,7 @@ init
         let tomeItem = tomeMap.get(id)
         var inventoryFull = picker.isInventoryFull()
         var dontAdd = false
-        // print("full: " + inventoryFull.toString())
+        // print("pickup: " + inventoryFull.toString())
 
         if tomeItem != null
             // print("tome and not full")
@@ -181,6 +181,8 @@ init
             // print("is real")
             let recipeItem = realMap.get(id)
             recipeItem.applyBonuses(picker)
+            if itm.getUserData() == -2
+                itm.setUserData(-3)
 
         var recipeId = id
         if (tomeItem != null and recipeMap.has(tomeItem.getNewId()))
@@ -209,16 +211,23 @@ init
         let itm = EventData.getManipulatedItem()
         let dropper = EventData.getManipulatingUnit()
         let id = itm.getTypeId()
+        // print("drop")
         if not dropper.isIllusion() and realMap.has(id)
             let recipeItem = realMap.get(id)
             recipeItem.removeBonuses(dropper)
             if itm.getUserData() != -1 and (not timestamps.has(itm) or timestamps.get(itm) + 0.01 < getElapsedGameTime())
+                itm.setUserData(-2)
                 let charges = itm.getCharges()
                 nullTimer() ->
-                    let pos = itm.getPos()
-                    itm.remove()
-                    recipeItem.create(pos)
-                    ..setCharges(charges)
+                    // print("remove nulltimer")
+                    if itm.getUserData() == -3
+                        // print("transferred")
+                        itm.setUserData(0)
+                    else
+                        let pos = itm.getPos()
+                        itm.remove()
+                        recipeItem.create(pos)
+                        ..setCharges(charges)
 
 
         
