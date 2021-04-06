@@ -26,10 +26,10 @@ public class ItemBonus
         else
             result += color(205,55,55).toColorString()
         if bonus == Bonus.MANAREGEN
-            result += amount.toString() + "|r"
+            result += amount.toString()
         else
-            result += amount.round().toString() + "|r"
-        result += " " + bonus.toString()
+            result += amount.round().toString()
+        result += bonus.getMeasure() + "|r " + bonus.toString()
         return result
         
 public constant recipeMap = new HashMap<int, LinkedList<ItemRecipe>>
@@ -42,6 +42,8 @@ public class ItemRecipe
 
     var goldCost = 0
     var lumberCost = 0
+
+    var totalGoldCost = 0
 
     function gold(int gold)
         goldCost = gold
