@@ -3,6 +3,7 @@
 Requires wurst-bonus-handler for adding bonuses to items.
 
 `grill install https://github.com/Frotty/wurst-bonus-handler`
+
 `grill install https://github.com/Frotty/wurst-item-recipes:main`
  
 This library allows you to item recipes, meaning that if a list of **required items** is aquired, they will be replaced by a **result item**.
