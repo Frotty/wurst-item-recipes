@@ -14,6 +14,9 @@ constant tomeMap = new HashMap<int, RecipeItem>
 constant realMap = new HashMap<int, RecipeItem>
 constant timestamps = new HashMap<item, real>
 
+public interface ItemEventListener
+    function emit(unit actor)
+
 public function item.getRecipeItem() returns RecipeItem
     let itemId = this.getTypeId()
     if realMap.has(itemId)
@@ -42,6 +45,9 @@ public class RecipeItem extends ItemDefinition
     var maxStack = 0
     var tooltipBasic = ""
     var tooltipExtended = ""
+
+    ItemEventListener onPickup = null
+    ItemEventListener onDrop = null
 
     construct(int newId, int origId)
         super(newId, origId)
@@ -76,10 +82,14 @@ public class RecipeItem extends ItemDefinition
         setTooltipExtended(extended)
         
     function applyBonuses(unit u)
+        if onPickup != null
+            onPickup.emit(u)
         for bonus in bonusList
             bonus.apply(u)
 
     function removeBonuses(unit u)
+        if onDrop != null
+            onDrop.emit(u)
         for bonus in bonusList
             bonus.remove(u)
 
