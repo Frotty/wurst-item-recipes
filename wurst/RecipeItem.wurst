@@ -93,6 +93,12 @@ public class RecipeItem extends ItemDefinition
         for bonus in bonusList
             bonus.remove(u)
 
+    function onPickup(ItemEventListener listener)
+        this.onPickup = listener
+
+    function onDrop(ItemEventListener listener)
+        this.onDrop = listener
+
     override function setName(string data)
         super.setName(data)
         tomeDef.setName(data)
@@ -138,7 +144,6 @@ public class RecipeItem extends ItemDefinition
         super.setTooltipBasic(data)
         tomeDef.setTooltipBasic(data)
         tooltipBasic = data
-
 
     override function setTooltipExtended(string data)
         super.setTooltipExtended(data)
