@@ -79,7 +79,9 @@ public class RecipeItem extends ItemDefinition
         for bonus in bonusList
             extended += bonus.toString() + "\n"
         
-        extended += "\n" + description
+        if description.length() > 0
+            extended += "\n" + description
+
         setTooltipExtended(extended)
 
         tomeDef..setName(name)
