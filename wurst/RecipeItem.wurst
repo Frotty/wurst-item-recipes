@@ -74,12 +74,16 @@ public class RecipeItem extends ItemDefinition
 
     function generateTooltip(string description)
         setTooltipBasic("Purchase " + name)
+
         var extended = ""
         for bonus in bonusList
             extended += bonus.toString() + "\n"
         
         extended += "\n" + description
         setTooltipExtended(extended)
+
+        tomeDef..setName(name)
+        ..setDescription(extended)
         
     function applyBonuses(unit u)
         if onPickup != null
