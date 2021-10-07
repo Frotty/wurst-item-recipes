@@ -2,13 +2,19 @@
 
 Requires wurst-bonus-handler for adding bonuses to items.
 
+This library allows you to item recipes, meaning that if a list of **required items** is aquired, they will be replaced by a **result item**.
+
+## Installation
+
+Execute:
+
 `grill install https://github.com/Frotty/wurst-bonus-handler`
 
 `grill install https://github.com/Frotty/wurst-item-recipes:main`
- 
-This library allows you to item recipes, meaning that if a list of **required items** is aquired, they will be replaced by a **result item**.
 
-Example Recipe:
+Then 'reload window' in vsocde. 
+ 
+## Example Recipe
 
 ```wurst
 constant RECIPE_DEF = new ItemRecipe()
@@ -27,7 +33,7 @@ Recipe items have the following benefits:
 - Generating tooltips 
 
 
-Using `RecipeItem will create a tome dummy allowing for pick up with full inventory.
+Using `RecipeItem` will create a tome dummy allowing for pick up with full inventory.
 This means units will never receive a "full inventory" warning and always atempt a pick up.
 This way they are able to pick up items (e.g. recipes or stackable potions) while having a full inventory.
 

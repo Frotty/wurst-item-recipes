@@ -2,7 +2,6 @@ package RecipesTest
 import ClosureTimers
 import RecipeItem
 import Assets
-import Icons
 import ClosureEvents
 
 constant ITEM1_DEF = compiletime(new RecipeItem('desc')
@@ -32,17 +31,21 @@ constant ITEM3_DEF = compiletime(new RecipeItem()
 ..addBonus(Bonus.ARMOR, 10)
 ..generateTooltip("Cool Recipe Ring"))
 ..onPickup(u -> begin
-    print("pickup")
+    print("pickup ")
+    
 end)
 ..onDrop(u -> begin
     print("drop")
+    foo()
 end)
 ..register()
 
-constant RECIPE_DEF = new ItemRecipe()
-    ..setRequiredItems(ITEM1_DEF.getNewId(), ITEM2_DEF.getNewId())
-    ..setResultItem(ITEM3_DEF)
+function foo()
+    print(ITEM3_DEF.goldWorth.toString())
 
+constant RECIPE_DEF = new ItemRecipe()
+    ..setRequiredItems(ITEM1_DEF, ITEM2_DEF)
+    ..setResultItem(ITEM3_DEF)
 
 init
     createUnit(players[0], UnitIds.bloodmage, ZERO2, 0 .fromDeg())
