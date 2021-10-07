@@ -61,17 +61,8 @@ public class ItemRecipe
     var resultItemId = 0
     var name = ""
     var tooltip = ""
-
     var goldCost = 0
-    var lumberCost = 0
-
     var totalGoldCost = 0
-
-    function gold(int gold)
-        goldCost = gold
-
-    function lumber(int lumber)
-        lumberCost = lumber
 
     function setRequiredItems(vararg RecipeItem ingredients)
         tooltip = COLOR_GOLD.toColorString() + "Required Items|r:\n"
@@ -92,7 +83,8 @@ public class ItemRecipe
         resultItemId = recipeItem.getNewId()
         name = "Purchase " + recipeItem.name
         tooltip += "\n" + recipeItem.tooltipExtended
-        totalGoldCost += recipeItem.goldCost
+        goldCost = recipeItem.goldCost
+        totalGoldCost += goldCost
         recipeItem.goldWorth = totalGoldCost
 
     function checkUnit(unit u, int fullId) returns boolean

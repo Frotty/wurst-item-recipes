@@ -1,4 +1,5 @@
 ---
+projectName: Wurst Item Recipes
 dependencies:
 - https://github.com/wurstscript/wurstStdlib2
 - https://github.com/Frotty/wurst-bonus-handler
