@@ -64,6 +64,9 @@ public class ItemRecipe
     var goldCost = 0
     var totalGoldCost = 0
 
+    function gold(int gold)
+        goldCost = gold
+
     function setRequiredItems(vararg RecipeItem ingredients)
         tooltip = COLOR_GOLD.toColorString() + "Required Items|r:\n"
         for ingredient in ingredients
@@ -83,7 +86,6 @@ public class ItemRecipe
         resultItemId = recipeItem.getNewId()
         name = "Purchase " + recipeItem.name
         tooltip += "\n" + recipeItem.tooltipExtended
-        goldCost = recipeItem.goldCost
         totalGoldCost += goldCost
         recipeItem.goldWorth = totalGoldCost
 
