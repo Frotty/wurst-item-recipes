@@ -62,10 +62,15 @@ public class ItemRecipe
     var name = ""
     var tooltip = ""
     var goldCost = 0
+    var lumberCost = 0
     var totalGoldCost = 0
+    var totalLumberCost = 0
 
     function gold(int gold)
         goldCost = gold
+
+    function lumber(int lumber)
+        lumberCost = lumber
 
     function setRequiredItems(vararg RecipeItem ingredients)
         tooltip = COLOR_GOLD.toColorString() + "Required Items|r:\n"
@@ -74,6 +79,7 @@ public class ItemRecipe
             itemList.add(id)
 
             totalGoldCost += ingredient.goldWorth
+            totalLumberCost += ingredient.lumberWorth
             let dummy = createItem(id, ZERO2)
             tooltip += "  - " + dummy.getName() + "\n"
             dummy.remove()
@@ -87,7 +93,9 @@ public class ItemRecipe
         name = "Purchase " + recipeItem.name
         tooltip += "\n" + recipeItem.tooltipExtended
         totalGoldCost += goldCost
+        totalLumberCost += lumberCost
         recipeItem.goldWorth = totalGoldCost
+        recipeItem.lumberWorth = totalLumberCost
 
     function checkUnit(unit u, int fullId) returns boolean
         let requirements = itemList.copy()
@@ -123,6 +131,7 @@ public class RecipeItem extends ItemDefinition
     var goldCost = 0
     var goldWorth = 0
     var lumberCost = 0
+    var lumberWorth = 0
     var charges = 0
     var maxStack = 0
     var tooltipBasic = ""
@@ -218,6 +227,7 @@ public class RecipeItem extends ItemDefinition
         super.setLumberCost(data)
         tomeDef.setLumberCost(data)
         lumberCost = data
+        lumberWorth = data
 
     override function setNumberofCharges(int data)
         super.setNumberofCharges(data)
@@ -301,7 +311,7 @@ init
                 extraId = recipeItem.getNewId()
                 // print("extraId: " + extraId.toRawCode())
             for recipe in recipes
-                if recipe.goldCost == 0 and recipe.checkUnit(picker, extraId)
+                if recipe.goldCost == 0 and recipe.lumberCost == 0 and recipe.checkUnit(picker, extraId)
                     inventoryFull = false
                     break
 
