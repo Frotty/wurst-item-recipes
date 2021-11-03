@@ -54,7 +54,7 @@ public class ItemBonus
     function toString() returns string
         var result = ""
         if amount >= 0
-            result += COLOR_GOLD.toColorString() + "+"
+            result += COLOR_GOLD_STR + "+"
         else
             result += color(205,55,55).toColorString()
         if bonus == Bonus.MANAREGEN
@@ -83,7 +83,7 @@ public class ItemRecipe
         lumberCost = lumber
 
     function setRequiredItems(vararg RecipeItem ingredients)
-        tooltip = COLOR_GOLD.toColorString() + "Required Items|r:\n"
+        tooltip = COLOR_GOLD_STR + "Required Items|r:\n"
         for ingredient in ingredients
             let id = ingredient.getNewId()
             itemList.add(id)
@@ -185,13 +185,14 @@ public class RecipeItem extends ItemDefinition
         for bonus in bonusList
             extended += bonus.toString() + "\n"
 
-        extended += "\n"
-        
-        for property in properties
-            extended += property.description + "\n"
+        if not properties.isEmpty() 
+            extended += "\n"
+
+            for property in properties
+                extended += property.description + "\n"
         
         if description.length() > 0
-            extended += "\n" + description
+            extended += (bonusList.isEmpty() ? "" : "\n") + description
 
         setTooltipExtended(extended)
 
