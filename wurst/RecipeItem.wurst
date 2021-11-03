@@ -27,6 +27,16 @@ public function item.getRecipeItem() returns RecipeItem
     return null
 
 
+public class CustomProperty
+    var description = ""
+    ItemEventListener onPickup = null
+    ItemEventListener onDrop = null
+
+    construct(string description, ItemEventListener onPickup, ItemEventListener onDrop)
+        this.description = description
+        this.onPickup = onPickup
+        this.onDrop = onDrop
+    
 public class ItemBonus
     Bonus bonus
     real amount
@@ -81,7 +91,7 @@ public class ItemRecipe
             totalGoldCost += ingredient.goldWorth
             totalLumberCost += ingredient.lumberWorth
             let dummy = createItem(id, ZERO2)
-            tooltip += "  - " + dummy.getName() + "\n"
+            tooltip += "  • " + dummy.getName() + "\n"
             dummy.remove()
 
             if not recipeMap.has(id)
@@ -126,6 +136,7 @@ public class RecipeItem extends ItemDefinition
         ..setModelUsed(Objects.treasurechest1)
 
     let bonusList = new LinkedList<ItemBonus>
+    let properties = new LinkedList<CustomProperty>
     var icon = ""
     var name = ""
     var goldCost = 0
@@ -163,12 +174,21 @@ public class RecipeItem extends ItemDefinition
     function addBonus(Bonus bonus, real amount)
         bonusList.add(new ItemBonus(bonus, amount))
 
+    /** Adds a property with description and pickup/drop listeners */
+    function addTooltipProperty(string description, ItemEventListener onPickup, ItemEventListener onDrop)
+        properties.add(new CustomProperty(description, onPickup, onDrop))
+
     function generateTooltip(string description)
         setTooltipBasic("Purchase " + name)
 
         var extended = ""
         for bonus in bonusList
             extended += bonus.toString() + "\n"
+
+        extended += "\n"
+        
+        for property in properties
+            extended += property.description + "\n"
         
         if description.length() > 0
             extended += "\n" + description
@@ -181,12 +201,19 @@ public class RecipeItem extends ItemDefinition
     function applyBonuses(unit u)
         if onPickup != null
             onPickup.emit(u)
+        for property in properties
+            if property.onPickup != null
+                property.onPickup.emit(u)
         for bonus in bonusList
             bonus.apply(u)
+        
 
     function removeBonuses(unit u)
         if onDrop != null
             onDrop.emit(u)
+        for property in properties
+            if property.onDrop != null
+                property.onDrop.emit(u)
         for bonus in bonusList
             bonus.remove(u)
 
