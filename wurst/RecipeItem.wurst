@@ -184,15 +184,12 @@ public class RecipeItem extends ItemDefinition
         var extended = ""
         for bonus in bonusList
             extended += bonus.toString() + "\n"
-
-        if not properties.isEmpty() 
-            extended += "\n"
-
-            for property in properties
-                extended += property.description + "\n"
+        
+        for property in properties
+            extended += property.description + "\n"
         
         if description.length() > 0
-            extended += (bonusList.isEmpty() ? "" : "\n") + description
+            extended += ((bonusList.isEmpty() and properties.isEmpty()) ? "" : "\n") + description
 
         setTooltipExtended(extended)
 
