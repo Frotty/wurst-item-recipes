@@ -13,6 +13,7 @@ import AttachmentPoints
 
 constant tomeMap = new HashMap<int, RecipeItem>
 constant realMap = new HashMap<int, RecipeItem>
+constant itemRecipeMap = new HashMap<int, ItemRecipe>
 constant timestamps = new HashMap<item, real>
 
 public interface ItemEventListener
@@ -20,10 +21,22 @@ public interface ItemEventListener
 
 public function item.getRecipeItem() returns RecipeItem
     let itemId = this.getTypeId()
+    return getRecipeItem(itemId)
+
+public function item.getItemRecipe() returns ItemRecipe
+    let itemId = this.getTypeId()
+    return getItemRecipe(itemId)
+
+public function getRecipeItem(int itemId) returns RecipeItem
     if realMap.has(itemId)
         return realMap.get(itemId)
     else if tomeMap.has(itemId)
         return tomeMap.get(itemId)
+    return null
+
+public function getItemRecipe(int itemId) returns ItemRecipe
+    if itemRecipeMap.has(itemId)
+        return itemRecipeMap.get(itemId)
     return null
 
 
@@ -100,6 +113,7 @@ public class ItemRecipe
 
     function setResultItem(RecipeItem recipeItem)
         resultItemId = recipeItem.getNewId()
+        itemRecipeMap.put(resultItemId, this)
         name = "Purchase " + recipeItem.name
         tooltip += "\n" + recipeItem.tooltipExtended
         totalGoldCost += goldCost
