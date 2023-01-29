@@ -13,7 +13,7 @@ import AttachmentPoints
 
 constant tomeMap = new HashMap<int, RecipeItem>
 constant realMap = new HashMap<int, RecipeItem>
-constant itemRecipeMap = new HashMap<int, ItemRecipe>
+constant itemRecipeMap = new HashMap<int, LinkedList<ItemRecipe>>
 constant timestamps = new HashMap<item, real>
 
 public interface ItemEventListener
@@ -23,9 +23,9 @@ public function item.getRecipeItem() returns RecipeItem
     let itemId = this.getTypeId()
     return getRecipeItem(itemId)
 
-public function item.getItemRecipe() returns ItemRecipe
+public function item.getItemRecipeList() returns LinkedList<ItemRecipe>
     let itemId = this.getTypeId()
-    return getItemRecipe(itemId)
+    return getItemRecipesList(itemId)
 
 public function getRecipeItem(int itemId) returns RecipeItem
     if realMap.has(itemId)
@@ -34,7 +34,7 @@ public function getRecipeItem(int itemId) returns RecipeItem
         return tomeMap.get(itemId)
     return null
 
-public function getItemRecipe(int itemId) returns ItemRecipe
+public function getItemRecipesList(int itemId) returns LinkedList<ItemRecipe>
     if itemRecipeMap.has(itemId)
         return itemRecipeMap.get(itemId)
     return null
@@ -113,7 +113,11 @@ public class ItemRecipe
 
     function setResultItem(RecipeItem recipeItem)
         resultItemId = recipeItem.getNewId()
-        itemRecipeMap.put(resultItemId, this)
+        if itemRecipeMap.has(resultItemId)
+            itemRecipeMap.get(resultItemId).add(this)
+        else
+            let itemRecipeList = new LinkedList<ItemRecipe>..add(this)
+            itemRecipeMap.put(resultItemId, itemRecipeList)
         name = "Purchase " + recipeItem.name
         tooltip += "\n" + recipeItem.tooltipExtended
         totalGoldCost += goldCost
